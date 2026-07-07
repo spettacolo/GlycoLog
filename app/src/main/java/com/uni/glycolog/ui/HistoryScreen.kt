@@ -1,2 +1,6 @@
-package com.uni.glycolog.ui 
+package com.uni.glycolog.ui
 
+import androidx.compose.runtime.Composable
+
+@Composable
+fun HistoryScreen() {}
