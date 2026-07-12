@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">GlycoLog</string>
+
+    <string name="error_glucose_required">Inserisci un valore di glicemia valido</string>
+    <string name="error_glucose_range">La glicemia deve essere tra 20 e 600 mg/dL</string>
+    <string name="error_insulin_invalid">Dose di insulina non valida (0–100 UI)</string>
+    <string name="error_carbs_invalid">Carboidrati non validi (0–300 g)</string>
 </resources>
