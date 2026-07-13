@@ -1,6 +1,25 @@
 <resources>
     <string name="app_name">GlycoLog</string>
 
+    <string name="value_mg_dl">%1$d mg/dL</string>
+    <string name="percent_value">%1$d%%</string>
+
+    <string name="chart_title_24h">ULTIME 24 ORE</string>
+    <string name="chart_title_7d">ULTIMI 7 GIORNI</string>
+    <string name="chart_title_30d">ULTIMI 30 GIORNI</string>
+    <string name="chart_period_24h">24h</string>
+    <string name="chart_period_7d">7 giorni</string>
+    <string name="chart_period_30d">30 giorni</string>
+    <string name="chart_empty">Nessuna misurazione nel periodo</string>
+    <string name="no_measurements">Nessuna misurazione registrata</string>
+    <string name="new_measurement">+ Nuova misurazione</string>
+    <string name="btn_history">Storico</string>
+    <string name="btn_pdf">PDF</string>
+    <string name="stats_avg_7d">Media 7 giorni</string>
+    <string name="stats_tir">Tempo in range</string>
+    <string name="reminders_icon">Promemoria</string>
+    <string name="in_range_indicator">Indicatore range</string>
+
     <string name="error_glucose_required">Inserisci un valore di glicemia valido</string>
     <string name="error_glucose_range">La glicemia deve essere tra 20 e 600 mg/dL</string>
     <string name="error_insulin_invalid">Dose di insulina non valida (0–100 UI)</string>

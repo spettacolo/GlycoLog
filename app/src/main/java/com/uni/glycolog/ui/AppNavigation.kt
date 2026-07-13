@@ -7,7 +7,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun AppNavigation(modifier: Modifier = Modifier) {
+fun AppNavigation(
+    viewModel: MeasurementViewModel,
+    modifier: Modifier = Modifier
+) {
     val navController = rememberNavController()
 
     NavHost(
@@ -17,7 +20,11 @@ fun AppNavigation(modifier: Modifier = Modifier) {
     ) {
         composable("dashboard") {
             DashboardScreen(
-                onNavigateToAddEntry = { navController.navigate("add_entry") }
+                viewModel = viewModel,
+                onNavigateToAddEntry = { navController.navigate("add_entry") },
+                onNavigateToHistory = { navController.navigate("history") },
+                onNavigateToReport = {  },
+                onNavigateToReminders = {  }
             )
         }
 
@@ -25,6 +32,10 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             AddEntryScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
+        }
+
+        composable("history") {
+            HistoryScreen()
         }
     }
 }

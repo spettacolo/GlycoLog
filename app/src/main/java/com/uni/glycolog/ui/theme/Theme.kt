@@ -1,54 +1,49 @@
 package com.uni.glycolog.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 
+// tema scuro: e' quello del mockup di progetto
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = GreenPrimary,
+    onPrimary = DarkBackground,
+    secondary = GreenDark,
+    onSecondary = DarkBackground,
+    background = DarkBackground,
+    onBackground = LightSurface,
+    surface = DarkSurface,
+    onSurface = LightSurface,
+    surfaceVariant = DarkBorder,
+    onSurfaceVariant = GrayText,
+    outline = DarkBorder,
+    error = RedAlert
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = GreenDark,
+    onPrimary = LightSurface,
+    secondary = GreenPrimary,
+    onSecondary = DarkBackground,
+    background = LightBackground,
+    onBackground = DarkBackground,
+    surface = LightSurface,
+    onSurface = DarkBackground,
+    surfaceVariant = LightBorder,
+    onSurfaceVariant = GrayTextLight,
+    outline = LightBorder,
+    error = RedAlert
 )
 
 @Composable
 fun GlycoLogTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    // niente dynamic color: manteniamo l'identita' visiva verde/scura dell'app
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,
