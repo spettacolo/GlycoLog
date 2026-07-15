@@ -30,6 +30,7 @@ fun AppNavigation(
 
         composable("add_entry") {
             AddEntryScreen(
+                viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }

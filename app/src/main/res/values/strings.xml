@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">GlycoLog</string>
 
+    <string name="back">Indietro</string>
     <string name="value_mg_dl">%1$d mg/dL</string>
     <string name="percent_value">%1$d%%</string>
 
@@ -20,8 +21,26 @@
     <string name="reminders_icon">Promemoria</string>
     <string name="in_range_indicator">Indicatore range</string>
 
+    <string name="title_new_measurement">Nuova misurazione</string>
+    <string name="hint_glucose">Glicemia (mg/dL) *</string>
+    <string name="hint_fast_insulin">Insulina rapida (UI)</string>
+    <string name="hint_slow_insulin">Insulina lenta (UI)</string>
+    <string name="hint_carbs">Carboidrati (g)</string>
+    <string name="hint_context">Contesto</string>
+    <string name="hint_activity">Attività fisica</string>
+    <string name="hint_notes">Note</string>
+    <string name="btn_save">Salva misurazione</string>
+    <string name="msg_saved">Misurazione salvata</string>
     <string name="error_glucose_required">Inserisci un valore di glicemia valido</string>
     <string name="error_glucose_range">La glicemia deve essere tra 20 e 600 mg/dL</string>
     <string name="error_insulin_invalid">Dose di insulina non valida (0–100 UI)</string>
     <string name="error_carbs_invalid">Carboidrati non validi (0–300 g)</string>
+
+    <string name="channel_alerts">Avvisi valori fuori range</string>
+    <string name="channel_reminders">Promemoria terapeutici</string>
+    <string name="alert_low_title">Attenzione: possibile ipoglicemia</string>
+    <string name="alert_high_title">Attenzione: iperglicemia</string>
+    <string name="alert_value_text">Valore registrato: %1$d mg/dL</string>
+    <string name="reminder_title">È ora di misurare la glicemia</string>
+    <string name="reminder_text">Registra una nuova misurazione in GlycoLog</string>
 </resources>

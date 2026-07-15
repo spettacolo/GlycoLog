@@ -1,0 +1,13 @@
+<resources>
+    <!-- contesti temporali della misurazione (dropdown nella schermata di inserimento) -->
+    <string-array name="temporal_contexts">
+        <item>Digiuno</item>
+        <item>Pre-colazione</item>
+        <item>Post-colazione</item>
+        <item>Pre-pranzo</item>
+        <item>Post-pranzo</item>
+        <item>Pre-cena</item>
+        <item>Post-cena</item>
+        <item>Notturna</item>
+    </string-array>
+</resources>

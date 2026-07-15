@@ -1,16 +1,18 @@
 package com.uni.glycolog
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.uni.glycolog.data.AppDatabase
-import com.uni.glycolog.data.MeasurementRepository
 import com.uni.glycolog.ui.AppNavigation
 import com.uni.glycolog.ui.MeasurementViewModel
 import com.uni.glycolog.ui.MeasurementViewModelFactory
@@ -18,13 +20,16 @@ import com.uni.glycolog.ui.theme.GlycoLogTheme
 
 class MainActivity : ComponentActivity() {
 
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        askNotificationPermission()
 
-        val database = AppDatabase.getDatabase(this)
-        val repository = MeasurementRepository(database.measurementDao())
-        val factory = MeasurementViewModelFactory(repository)
+        val app = application as GlycoLogApp
+        val factory = MeasurementViewModelFactory(app.repository)
 
         setContent {
             GlycoLogTheme {
@@ -36,6 +41,15 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+        }
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 }
