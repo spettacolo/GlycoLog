@@ -36,7 +36,10 @@ fun AppNavigation(
         }
 
         composable("history") {
-            HistoryScreen()
+            HistoryScreen(
+                viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
     }
 }
