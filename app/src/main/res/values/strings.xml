@@ -3,6 +3,7 @@
 
     <string name="back">Indietro</string>
     <string name="cancel">Annulla</string>
+    <string name="ok">OK</string>
     <string name="value_mg_dl">%1$d mg/dL</string>
     <string name="percent_value">%1$d%%</string>
 
@@ -52,6 +53,41 @@
     <string name="ins_slow_format">Ins. lenta %1$s UI</string>
     <string name="carbs_format">CHO %1$d g</string>
     <string name="activity_format">Attività: %1$s</string>
+
+    <string name="title_report">Report PDF</string>
+    <string name="report_period">Periodo del report</string>
+    <string name="period_today">Oggi</string>
+    <string name="period_week">Ultimi 7 giorni</string>
+    <string name="period_month">Ultimi 30 giorni</string>
+    <string name="period_custom">Personalizzato</string>
+    <string name="btn_pick_range">Scegli intervallo</string>
+    <string name="btn_generate">Genera PDF</string>
+    <string name="report_generating">Generazione in corso…</string>
+    <string name="report_done">Report salvato: %1$s</string>
+    <string name="report_empty">Nessuna misurazione nel periodo selezionato</string>
+    <string name="share_report">Condividi report</string>
+    <string name="pdf_title">GlycoLog – Report Glicemico</string>
+    <string name="pdf_period">Periodo: %1$s</string>
+    <string name="pdf_generated">Generato il %1$s</string>
+    <string name="pdf_stats_title">Statistiche del periodo</string>
+    <string name="pdf_stat_count">Misurazioni registrate: %1$d</string>
+    <string name="pdf_stat_mean">Media glicemica: %1$s mg/dL</string>
+    <string name="pdf_stat_sd">Deviazione standard: %1$s mg/dL</string>
+    <string name="pdf_stat_tir">Tempo in Range (70–180 mg/dL): %1$d%%</string>
+    <string name="pdf_stat_min_max">Minimo: %1$d mg/dL · Massimo: %2$d mg/dL</string>
+    <string name="pdf_slots_title">Distribuzione per fasce orarie</string>
+    <string name="pdf_slot_row">%1$s: %2$d misurazioni · media %3$s mg/dL</string>
+    <string name="slot_night">Notte (00–06)</string>
+    <string name="slot_morning">Mattina (06–12)</string>
+    <string name="slot_afternoon">Pomeriggio (12–18)</string>
+    <string name="slot_evening">Sera (18–24)</string>
+    <string name="pdf_col_datetime">Data e ora</string>
+    <string name="pdf_col_glucose">Glicemia</string>
+    <string name="pdf_col_fast">Ins. R</string>
+    <string name="pdf_col_slow">Ins. L</string>
+    <string name="pdf_col_carbs">CHO</string>
+    <string name="pdf_col_context">Contesto</string>
+    <string name="pdf_col_notes">Note</string>
 
     <string name="channel_alerts">Avvisi valori fuori range</string>
     <string name="channel_reminders">Promemoria terapeutici</string>
