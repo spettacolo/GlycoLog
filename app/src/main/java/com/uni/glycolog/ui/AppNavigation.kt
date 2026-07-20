@@ -24,7 +24,7 @@ fun AppNavigation(
                 onNavigateToAddEntry = { navController.navigate("add_entry") },
                 onNavigateToHistory = { navController.navigate("history") },
                 onNavigateToReport = { navController.navigate("report") },
-                onNavigateToReminders = {  }
+                onNavigateToReminders = { navController.navigate("reminders") }
             )
         }
 
@@ -45,6 +45,12 @@ fun AppNavigation(
         composable("report") {
             ReportScreen(
                 viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable("reminders") {
+            ReminderScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

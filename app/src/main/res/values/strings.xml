@@ -89,6 +89,11 @@
     <string name="pdf_col_context">Contesto</string>
     <string name="pdf_col_notes">Note</string>
 
+    <string name="title_reminders">Promemoria</string>
+    <string name="reminder_switch">Promemoria misurazione</string>
+    <string name="reminder_desc">Ricevi una notifica periodica per ricordarti di misurare la glicemia.</string>
+    <string name="reminder_interval">Intervallo</string>
+    <string name="interval_hours">Ogni %1$d ore</string>
     <string name="channel_alerts">Avvisi valori fuori range</string>
     <string name="channel_reminders">Promemoria terapeutici</string>
     <string name="alert_low_title">Attenzione: possibile ipoglicemia</string>
