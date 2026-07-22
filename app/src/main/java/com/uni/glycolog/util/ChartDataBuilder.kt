@@ -15,6 +15,7 @@ data class ChartData(val points: List<ChartPoint>, val labels: List<String>)
 object ChartDataBuilder {
 
     private const val DAY_MS = 24L * 60 * 60 * 1000
+    private const val HOUR_MS = 60L * 60 * 1000
 
     fun build(
         measurements: List<MeasurementEntity>,
@@ -27,13 +28,23 @@ object ChartDataBuilder {
     }
 
     private fun buildHours(measurements: List<MeasurementEntity>, now: Long): ChartData {
-        val from = now - DAY_MS
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = now
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        var to = calendar.timeInMillis
+        if (to < now) to += HOUR_MS
+        val from = to - DAY_MS
+
         val points = measurements
             .filter { it.timestamp in from..now }
             .sortedBy { it.timestamp }
             .map { ChartPoint((it.timestamp - from).toFloat() / DAY_MS, it.bloodSugarLevel.toFloat()) }
+
         val formatter = SimpleDateFormat("HH:00", Locale.getDefault())
-        val labels = (0..4).map { i -> formatter.format(Date(from + i * 6L * 60 * 60 * 1000)) }
+        val labels = (0..4).map { i -> formatter.format(Date(from + i * 6 * HOUR_MS)) }
         return ChartData(points, labels)
     }
 
@@ -46,11 +57,23 @@ object ChartDataBuilder {
             set(Calendar.MILLISECOND, 0)
             add(Calendar.DAY_OF_YEAR, -(days - 1))
         }
-        val startDay = calendar.timeInMillis
+
+        val dayStarts = LongArray(days + 1)
+        for (i in 0..days) {
+            dayStarts[i] = calendar.timeInMillis
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        fun dayIndexOf(timestamp: Long): Int {
+            for (i in 0 until days) {
+                if (timestamp >= dayStarts[i] && timestamp < dayStarts[i + 1]) return i
+            }
+            return -1
+        }
 
         val points = measurements
-            .filter { it.timestamp >= startDay }
-            .groupBy { ((it.timestamp - startDay) / DAY_MS).toInt().coerceIn(0, days - 1) }
+            .groupBy { dayIndexOf(it.timestamp) }
+            .filterKeys { it >= 0 }
             .entries
             .sortedBy { it.key }
             .map { (dayIndex, list) ->
@@ -64,15 +87,14 @@ object ChartDataBuilder {
             val dayFormatter = SimpleDateFormat("EEE", Locale.getDefault())
             (0 until days).map { i ->
                 if (i == days - 1) "Oggi"
-                else dayFormatter.format(Date(startDay + i * DAY_MS))
+                else dayFormatter.format(Date(dayStarts[i]))
                     .replaceFirstChar { it.uppercase() }
                     .removeSuffix(".")
             }
         } else {
             val dateFormatter = SimpleDateFormat("dd/MM", Locale.getDefault())
             (0..4).map { i ->
-                val dayIndex = (i * (days - 1)) / 4
-                dateFormatter.format(Date(startDay + dayIndex * DAY_MS))
+                dateFormatter.format(Date(dayStarts[(i * (days - 1)) / 4]))
             }
         }
         return ChartData(points, labels)

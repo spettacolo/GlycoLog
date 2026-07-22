@@ -31,7 +31,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,7 +55,7 @@ fun HistoryScreen(
     val dateFilter by viewModel.dateFilter.collectAsStateWithLifecycle()
     val rangeFilter by viewModel.rangeFilter.collectAsStateWithLifecycle()
 
-    var toDelete by remember { mutableStateOf<MeasurementEntity?>(null) }
+    var toDeleteId by rememberSaveable { mutableStateOf<Int?>(null) }
 
     Column(
         modifier = modifier
@@ -147,28 +147,29 @@ fun HistoryScreen(
                 items(measurements, key = { it.id }) { measurement ->
                     MeasurementCard(
                         measurement = measurement,
-                        onDelete = { toDelete = measurement }
+                        onDelete = { toDeleteId = measurement.id }
                     )
                 }
             }
         }
     }
 
-    toDelete?.let { measurement ->
+    val pendingDelete = toDeleteId?.let { id -> measurements.find { it.id == id } }
+    pendingDelete?.let { measurement ->
         AlertDialog(
-            onDismissRequest = { toDelete = null },
+            onDismissRequest = { toDeleteId = null },
             title = { Text(stringResource(R.string.delete_title)) },
             text = { Text(stringResource(R.string.delete_message)) },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.deleteMeasurement(measurement)
-                    toDelete = null
+                    toDeleteId = null
                 }) {
                     Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { toDelete = null }) {
+                TextButton(onClick = { toDeleteId = null }) {
                     Text(stringResource(R.string.cancel))
                 }
             }

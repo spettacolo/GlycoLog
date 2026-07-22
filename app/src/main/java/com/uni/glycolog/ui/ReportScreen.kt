@@ -48,6 +48,7 @@ import com.uni.glycolog.util.Formatters
 import com.uni.glycolog.util.PdfReportGenerator
 import java.io.File
 import java.util.Calendar
+import java.util.TimeZone
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -66,7 +67,7 @@ fun ReportScreen(
     var selectedPeriod by rememberSaveable { mutableStateOf(ReportPeriod.WEEK) }
     var customFrom by rememberSaveable { mutableStateOf<Long?>(null) }
     var customTo by rememberSaveable { mutableStateOf<Long?>(null) }
-    var showRangePicker by remember { mutableStateOf(false) }
+    var showRangePicker by rememberSaveable { mutableStateOf(false) }
     var generating by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -138,30 +139,37 @@ fun ReportScreen(
             onClick = {
                 scope.launch {
                     generating = true
-                    val now = System.currentTimeMillis()
-                    val (from, to) = when (selectedPeriod) {
-                        ReportPeriod.TODAY -> startOfToday() to now
-                        ReportPeriod.WEEK -> (now - 7 * DAY_MS) to now
-                        ReportPeriod.MONTH -> (now - 30 * DAY_MS) to now
-                        ReportPeriod.CUSTOM -> (customFrom ?: 0L) to (customTo ?: now)
-                    }
-                    val measurements = viewModel.getMeasurementsBetween(from, to)
-                    if (measurements.isEmpty()) {
-                        Toast.makeText(context, R.string.report_empty, Toast.LENGTH_SHORT).show()
-                    } else {
-                        val periodLabel =
-                            "${Formatters.formatDate(from)} – ${Formatters.formatDate(to)}"
-                        val file = withContext(Dispatchers.IO) {
-                            PdfReportGenerator(context).generate(measurements, periodLabel)
+                    try {
+                        val now = System.currentTimeMillis()
+                        val (from, to) = when (selectedPeriod) {
+                            ReportPeriod.TODAY -> startOfToday() to now
+                            ReportPeriod.WEEK -> (now - 7 * DAY_MS) to now
+                            ReportPeriod.MONTH -> (now - 30 * DAY_MS) to now
+                            ReportPeriod.CUSTOM -> (customFrom ?: 0L) to (customTo ?: now)
                         }
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.report_done, file.name),
-                            Toast.LENGTH_LONG
-                        ).show()
-                        shareReport(context, file)
+                        val measurements = viewModel.getMeasurementsBetween(from, to)
+                        if (measurements.isEmpty()) {
+                            Toast.makeText(context, R.string.report_empty, Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            val periodLabel =
+                                "${Formatters.formatDate(from)} – ${Formatters.formatDate(to)}"
+                            val file = withContext(Dispatchers.IO) {
+                                PdfReportGenerator(context.applicationContext)
+                                    .generate(measurements, periodLabel)
+                            }
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.report_done, file.name),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            shareReport(context, file)
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(context, R.string.report_error, Toast.LENGTH_SHORT).show()
+                    } finally {
+                        generating = false
                     }
-                    generating = false
                 }
             },
             enabled = !generating &&
@@ -187,8 +195,8 @@ fun ReportScreen(
                     val start = pickerState.selectedStartDateMillis
                     val end = pickerState.selectedEndDateMillis
                     if (start != null) {
-                        customFrom = start
-                        customTo = (end ?: start) + DAY_MS - 1
+                        customFrom = utcToLocalDayStart(start)
+                        customTo = localDayEnd(utcToLocalDayStart(end ?: start))
                     }
                     showRangePicker = false
                 }) {
@@ -241,6 +249,26 @@ private fun startOfToday(): Long =
         set(Calendar.SECOND, 0)
         set(Calendar.MILLISECOND, 0)
     }.timeInMillis
+
+private fun utcToLocalDayStart(utcMillis: Long): Long {
+    val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+        timeInMillis = utcMillis
+    }
+    return Calendar.getInstance().apply {
+        clear()
+        set(
+            utc.get(Calendar.YEAR),
+            utc.get(Calendar.MONTH),
+            utc.get(Calendar.DAY_OF_MONTH)
+        )
+    }.timeInMillis
+}
+
+private fun localDayEnd(dayStartLocal: Long): Long =
+    Calendar.getInstance().apply {
+        timeInMillis = dayStartLocal
+        add(Calendar.DAY_OF_YEAR, 1)
+    }.timeInMillis - 1
 
 private fun shareReport(context: Context, file: File) {
     val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)

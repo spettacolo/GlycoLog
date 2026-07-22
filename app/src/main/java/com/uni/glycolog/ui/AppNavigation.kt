@@ -2,6 +2,7 @@ package com.uni.glycolog.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -21,37 +22,45 @@ fun AppNavigation(
         composable("dashboard") {
             DashboardScreen(
                 viewModel = viewModel,
-                onNavigateToAddEntry = { navController.navigate("add_entry") },
-                onNavigateToHistory = { navController.navigate("history") },
-                onNavigateToReport = { navController.navigate("report") },
-                onNavigateToReminders = { navController.navigate("reminders") }
+                onNavigateToAddEntry = dropUnlessResumed {
+                    navController.navigate("add_entry") { launchSingleTop = true }
+                },
+                onNavigateToHistory = dropUnlessResumed {
+                    navController.navigate("history") { launchSingleTop = true }
+                },
+                onNavigateToReport = dropUnlessResumed {
+                    navController.navigate("report") { launchSingleTop = true }
+                },
+                onNavigateToReminders = dropUnlessResumed {
+                    navController.navigate("reminders") { launchSingleTop = true }
+                }
             )
         }
 
         composable("add_entry") {
             AddEntryScreen(
                 viewModel = viewModel,
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = dropUnlessResumed { navController.popBackStack() }
             )
         }
 
         composable("history") {
             HistoryScreen(
                 viewModel = viewModel,
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = dropUnlessResumed { navController.popBackStack() }
             )
         }
 
         composable("report") {
             ReportScreen(
                 viewModel = viewModel,
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = dropUnlessResumed { navController.popBackStack() }
             )
         }
 
         composable("reminders") {
             ReminderScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = dropUnlessResumed { navController.popBackStack() }
             )
         }
     }

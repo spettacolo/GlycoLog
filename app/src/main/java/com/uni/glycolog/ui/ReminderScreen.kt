@@ -1,6 +1,12 @@
 package com.uni.glycolog.ui
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -55,6 +61,22 @@ fun ReminderScreen(
 
     val intervalOptions = listOf(2, 4, 6, 8, 12, 24)
 
+    val enableReminder = {
+        enabled = true
+        prefs.edit().putBoolean(ReminderWorker.KEY_ENABLED, true).apply()
+        ReminderWorker.schedule(context, hours)
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            enableReminder()
+        } else {
+            Toast.makeText(context, R.string.notifications_blocked, Toast.LENGTH_LONG).show()
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -100,11 +122,23 @@ fun ReminderScreen(
                     Switch(
                         checked = enabled,
                         onCheckedChange = { checked ->
-                            enabled = checked
-                            prefs.edit().putBoolean(ReminderWorker.KEY_ENABLED, checked).apply()
                             if (checked) {
-                                ReminderWorker.schedule(context, hours)
+                                val permissionMissing = Build.VERSION.SDK_INT >= 33 &&
+                                        context.checkSelfPermission(
+                                            Manifest.permission.POST_NOTIFICATIONS
+                                        ) != PackageManager.PERMISSION_GRANTED
+                                if (permissionMissing) {
+                                    permissionLauncher.launch(
+                                        Manifest.permission.POST_NOTIFICATIONS
+                                    )
+                                } else {
+                                    enableReminder()
+                                }
                             } else {
+                                enabled = false
+                                prefs.edit()
+                                    .putBoolean(ReminderWorker.KEY_ENABLED, false)
+                                    .apply()
                                 ReminderWorker.cancel(context)
                             }
                         }

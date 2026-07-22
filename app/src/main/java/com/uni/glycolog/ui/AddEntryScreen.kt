@@ -56,6 +56,8 @@ fun AddEntryScreen(
     var notes by rememberSaveable { mutableStateOf("") }
     var glucoseError by rememberSaveable { mutableStateOf(false) }
 
+    var saving by remember { mutableStateOf(false) }
+
     val context = LocalContext.current
 
     Column(
@@ -155,6 +157,11 @@ fun AddEntryScreen(
                     notesText = notes
                 ) { outOfRangeValue ->
                     NotificationHelper.showOutOfRangeAlert(context, outOfRangeValue)
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.alert_value_text, outOfRangeValue),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
                 if (errorRes != null) {
@@ -162,10 +169,12 @@ fun AddEntryScreen(
                             errorRes == R.string.error_glucose_range
                     Toast.makeText(context, errorRes, Toast.LENGTH_SHORT).show()
                 } else {
+                    saving = true
                     Toast.makeText(context, R.string.msg_saved, Toast.LENGTH_SHORT).show()
                     onNavigateBack()
                 }
             },
+            enabled = !saving,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)

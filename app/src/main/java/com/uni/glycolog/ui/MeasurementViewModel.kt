@@ -124,7 +124,7 @@ class MeasurementViewModel(private val repository: MeasurementRepository) : View
             fastInsulin = null
         } else {
             fastInsulin = fastInsulinText.trim().replace(',', '.').toDoubleOrNull()
-            if (fastInsulin == null || fastInsulin < 0 || fastInsulin > GlucoseStats.INSULIN_MAX) {
+            if (fastInsulin == null || fastInsulin !in 0.0..GlucoseStats.INSULIN_MAX) {
                 return R.string.error_insulin_invalid
             }
         }
@@ -134,7 +134,7 @@ class MeasurementViewModel(private val repository: MeasurementRepository) : View
             slowInsulin = null
         } else {
             slowInsulin = slowInsulinText.trim().replace(',', '.').toDoubleOrNull()
-            if (slowInsulin == null || slowInsulin < 0 || slowInsulin > GlucoseStats.INSULIN_MAX) {
+            if (slowInsulin == null || slowInsulin !in 0.0..GlucoseStats.INSULIN_MAX) {
                 return R.string.error_insulin_invalid
             }
         }

@@ -17,7 +17,8 @@ object Formatters {
         DateUtils.getRelativeTimeSpanString(timestamp).toString()
 
     fun formatDose(dose: Double): String =
-        if (dose % 1.0 == 0.0) dose.toInt().toString() else dose.toString()
+        if (dose % 1.0 == 0.0) dose.toInt().toString()
+        else String.format(Locale.getDefault(), "%.1f", dose)
 
     fun formatDecimal(value: Double): String =
         String.format(Locale.getDefault(), "%.1f", value)

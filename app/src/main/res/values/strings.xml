@@ -101,4 +101,6 @@
     <string name="alert_value_text">Valore registrato: %1$d mg/dL</string>
     <string name="reminder_title">È ora di misurare la glicemia</string>
     <string name="reminder_text">Registra una nuova misurazione in GlycoLog</string>
+    <string name="notifications_blocked">Notifiche disattivate: abilitale nelle impostazioni di sistema per ricevere i promemoria</string>
+    <string name="report_error">Errore durante la generazione del report</string>
 </resources>
