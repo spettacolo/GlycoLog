@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.uni.glycolog.data.MeasurementRepository
 
-// factory manuale per passare il repository al ViewModel (pattern visto a lezione, niente DI)
 class MeasurementViewModelFactory(
     private val repository: MeasurementRepository
 ) : ViewModelProvider.Factory {
