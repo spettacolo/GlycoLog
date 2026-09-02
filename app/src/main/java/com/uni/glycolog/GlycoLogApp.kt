@@ -13,7 +13,6 @@ class GlycoLogApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        // i canali di notifica vanno creati subito, prima di inviare qualsiasi notifica
         NotificationHelper.createNotificationChannels(this)
     }
 }
