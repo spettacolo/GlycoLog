@@ -20,8 +20,7 @@ import com.uni.glycolog.util.GlucoseStats
 import kotlin.math.max
 import kotlin.math.min
 
-// grafico a linea disegnato con Canvas: banda del range 70-180, linea dei valori,
-// etichette dei giorni/ore in basso (stile del mockup di progetto)
+// grafico a linea (canvas)
 @Composable
 fun GlucoseChart(data: ChartData, modifier: Modifier = Modifier) {
     val lineColor = MaterialTheme.colorScheme.primary
@@ -37,7 +36,7 @@ fun GlucoseChart(data: ChartData, modifier: Modifier = Modifier) {
         val chartWidth = size.width - leftPad - rightPad
         val chartHeight = size.height - topPad - bottomPad
 
-        // scala verticale: include sempre il range 70-180 con un po' di margine
+        // scala verticale
         val values = data.points.map { it.value }
         val yMin = min(50f, (values.minOrNull() ?: GlucoseStats.RANGE_MIN.toFloat()) - 20f)
         val yMax = max(220f, (values.maxOrNull() ?: GlucoseStats.RANGE_MAX.toFloat()) + 20f)
@@ -67,7 +66,7 @@ fun GlucoseChart(data: ChartData, modifier: Modifier = Modifier) {
             )
         }
 
-        // etichette dei limiti (70 e 180) e dei tempi in basso, con il canvas nativo
+        // etichette dei limiti (70 e 180) e dei tempi in basso
         val textPaint = android.graphics.Paint().apply {
             color = labelColor.toArgb()
             textSize = 10.sp.toPx()
