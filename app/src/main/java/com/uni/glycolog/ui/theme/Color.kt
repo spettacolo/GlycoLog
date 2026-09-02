@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.uni.glycolog.util.GlucoseLevel
 import com.uni.glycolog.util.GlucoseStats
 
-// palette GlycoLog (mockup: tema scuro con accento verde)
+// palette (tema scuro con accento verde)
 val GreenPrimary = Color(0xFF2ECC71)
 val GreenDark = Color(0xFF1E8449)
 val YellowWarning = Color(0xFFF1C40F)
