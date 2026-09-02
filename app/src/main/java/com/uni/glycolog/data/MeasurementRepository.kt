@@ -2,7 +2,7 @@ package com.uni.glycolog.data
 
 import kotlinx.coroutines.flow.Flow
 
-// livello intermedio tra ViewModel e DAO (architettura MVVM vista a lezione)
+// livello intermedio tra ViewModel e DAO
 class MeasurementRepository(private val dao: MeasurementDao) {
 
     val allMeasurements: Flow<List<MeasurementEntity>> = dao.getAll()
